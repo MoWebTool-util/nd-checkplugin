@@ -8,19 +8,22 @@
 
 var browser = require('nd-browser');
 
-return function (name) {
-  name = name.toLowerCase();
-  if (browser.ie) {
+return function (pluginName) {
+  var plugins=navigator.plugins;
+  if (window.ActiveXObject) {
+    //ie
+    var activeName=pluginName+'.'+pluginName;
     try {
-      new ActiveXObject(name);
+      new ActiveXObject(activeName);
       return true;
     } catch (e) {
       return false;
     }
   } else {
-    var plugins = navigator.plugins;
+    //非ie
+    pluginName=pluginName.toLowerCase();
     for (var i = 0, len = plugins.length; i < len; i++) {
-      if (plugins[i].name.toLowerCase().indexOf(name) > -1) {
+      if (plugins[i].name.toLowerCase().indexOf(pluginName)!== -1) {
         return true;
       }
     }
